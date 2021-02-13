@@ -1,27 +1,52 @@
 # apiVersion: extensions/v1beta1
+# apiVersion: networking.k8s.io/v1beta1
+# kind: Ingress
+# metadata:
+#   name: ingress-service
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+#     nginx.ingress.kubernetes.io/rewrite-target: /$1 # rewrite target is not working
+# spec:
+#   rules:
+#     - http:
+#         paths:
+#           - path: /(.*)
+#             # pathType: Prefix
+#             backend:
+#               # service:
+#               #   name: client-cluster-ip-service
+#               #   port:
+#               #     number: 3050
+#           - path: /api/(.*)
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: server-cluster-ip-service
+#                 port: 
+#                   number: 5050
+
+
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: ingress-service
   annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /$1 # rewrite target is not working
+    kubernetes.io/ingress.class: 'nginx'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    # UPDATE THIS LINE ABOVE
 spec:
   rules:
     - http:
         paths:
-          - path: /(.*)
-            pathType: Prefix
+          - path: /?(.*)
+            # UPDATE THIS LINE ABOVE
             backend:
-              service:
-                name: client-cluster-ip-service
-                port:
-                  number: 3050
-          - path: /api/(.*)
-            pathType: Prefix
+              serviceName: client-cluster-ip-service
+              servicePort: 3050
+          - path: /api/?(.*)
+            # UPDATE THIS LINE ABOVE
             backend:
-              service:
-                name: server-cluster-ip-service
-                port: 
-                  number: 5050
+              serviceName: server-cluster-ip-service
+              servicePort: 5050
 
