@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: arun98/multi-server:v7
+          image: arun98/multi-server
           ports:
             - containerPort: 5000
           env:
