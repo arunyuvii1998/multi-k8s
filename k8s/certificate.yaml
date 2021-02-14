@@ -1,0 +1,20 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: arunv11u-com-tls
+spec:
+  secretName: arunv11u-com
+  issueRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: arunv11u.com
+  dnsNames:
+    - arunv11u.com
+    - www.arunv11u.com
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - arunv11u.com
+          - www.arunv11u.com
